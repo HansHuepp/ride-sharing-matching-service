@@ -19,8 +19,8 @@ app.post('/findRide', (req, res) => {
   res.json({ rideCost });
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get('/health', (req, res) => {
+  res.json({ status: 'UP' });
 });
 
 const PORT = process.env.PORT || 8080;
