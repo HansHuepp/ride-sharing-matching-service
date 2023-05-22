@@ -20,7 +20,7 @@ app.post('/findRide', (req, res) => {
 
   // You can add your logic here to calculate the cost based on the pickup and dropoff locations.
   // In this case, we're returning a static cost.
-  const rideCost = 21;
+  const rideCost = 12;
 
   res.json({ rideCost });
 });
