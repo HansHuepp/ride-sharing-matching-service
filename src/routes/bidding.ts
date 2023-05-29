@@ -1,5 +1,5 @@
-import { BidType, RideProviderBidType } from './../models/bid';
-import { MatchingService } from './../services/matching-service';
+import { RideProviderBidType } from '../models/bid';
+import { MatchingService } from '../services/matching-service';
 import { ServiceResponse } from '../routes';
 
 export async function bid(req: any):Promise<ServiceResponse<any>>{

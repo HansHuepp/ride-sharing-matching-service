@@ -1,12 +1,18 @@
 
 import { Express, Request, Response } from 'express';
 
-import { requestRide } from './routes/requestRide';
-import { bid } from './routes/bid';
+import { requestRide, getRideRequests, getRideRequestForRideProvider, getRideRequestForUser, setContractAddress } from './routes/rideRequest';
+import { bid } from './routes/bidding';
+import { health } from './routes/health';
 
 export function registerRoutes(server: Express) {
     server.post('/requestRide', asyncWrapper(requestRide));
     server.post('/bid', asyncWrapper(bid));
+    server.get('/rideRequests', asyncWrapper(getRideRequests));
+    server.get('/rideRequest/:rideRequestId', asyncWrapper(getRideRequestForUser));
+    server.get('/rideRequestForRideProvider/:rideRequestId', asyncWrapper(getRideRequestForRideProvider));
+    server.post('/setContractAddress/:rideRequestId/:contractAddress', asyncWrapper(setContractAddress));
+    server.get('/health', asyncWrapper(health));
 }
 
 export interface ServiceResponse<T> {
