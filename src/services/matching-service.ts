@@ -90,15 +90,18 @@ export class MatchingService {
               // Sort the array of bids[].amount in ascending order
               bids.sort((a: any, b: any) => a.amount - b.amount);           
                 let winnerBid: any
+                let secondHighestBid: any
                 // if winnerBid[1] does not exist, then there is only one bid
                 if (bids[1]) {
                     winnerBid = bids[1];
+                    secondHighestBid = bids[0];
                 } else {
                     winnerBid = bids[0];
+                    secondHighestBid = bids[0];
                 }
 
                 await rideRequestModel.updateOne({ rideRequestId: rideRequest.rideRequestId }, 
-                { auctionStatus: 'waiting-for-signature', auctionWinner: winnerBid.rideProviderId, winningBid: winnerBid.amount });
+                { auctionStatus: 'waiting-for-signature', auctionWinner: winnerBid.rideProviderId, winningBid: secondHighestBid.amount });
             } else {
                 await rideRequestModel.updateOne({ rideRequestId: rideRequest.rideRequestId }, 
                 { auctionStatus: 'waiting-for-signature' });
