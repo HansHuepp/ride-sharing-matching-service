@@ -93,8 +93,8 @@ export class MatchingService {
                 let secondHighestBid: any
                 // if winnerBid[1] does not exist, then there is only one bid
                 if (bids[1]) {
-                    winnerBid = bids[1];
-                    secondHighestBid = bids[0];
+                    winnerBid = bids[0];
+                    secondHighestBid = bids[1];
                 } else {
                     winnerBid = bids[0];
                     secondHighestBid = bids[0];
