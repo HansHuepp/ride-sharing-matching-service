@@ -3,10 +3,17 @@ import { v4 as uuidv4 } from 'uuid';
 
 export interface UserRideRequestType {
     userId: string;
-    pickupLocation: string;
-    dropoffLocation: string;
+    pickupLocation: {
+        type: string;
+        coordinates: number[];
+    };
+    dropoffLocation: {
+        type: string;
+        coordinates: number[];
+    };
     rating: number;
 }
+
 
 export const RideRequestType = new Schema({
     rideRequestId: {
@@ -15,8 +22,28 @@ export const RideRequestType = new Schema({
         unique: true
     },
     userId: String,
-    pickupLocation: String,
-    dropoffLocation: String,
+    pickupLocation: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
+    dropoffLocation: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     rating: Number,
     auctionStartedTimestamp: Number,
     auctionStatus: {
@@ -37,3 +64,5 @@ export const RideRequestType = new Schema({
         default: ''
     }
 });
+RideRequestType.index({ pickupLocation: '2dsphere' });
+RideRequestType.index({ dropoffLocation: '2dsphere' });
