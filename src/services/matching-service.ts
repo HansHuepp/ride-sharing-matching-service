@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 export class MatchingService {
   
-  async requestRide(rideRequest: UserRideRequestType): Promise<void> {
+  async requestRide(rideRequest: UserRideRequestType): Promise<any> {
     try {
       const rideRequestId = randomUUID();
       const rideRequestModel = mongoose.model('RideRequest', RideRequestType);
@@ -17,6 +17,7 @@ export class MatchingService {
         rating: rideRequest.rating,
         auctionStartedTimestamp: Math.floor(Date.now() / 1000),
       });
+      return rideRequestId;
     } catch (error) {
       console.error(error);
       throw error;
