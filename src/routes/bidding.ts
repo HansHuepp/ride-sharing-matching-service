@@ -10,6 +10,9 @@ export async function bid(req: any):Promise<ServiceResponse<any>>{
         rideProviderId: body.rideProviderId,
         amount: body.amount,
         rating: body.rating,
+        model: body.model,
+        estimatedArrivalTime: body.estimatedArrivalTime,
+        passengerCount: body.passengerCount,
     });
     return { msg: "Bid was successful", status: 200 };
 }

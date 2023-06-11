@@ -5,15 +5,10 @@ export class CronJobs {
 
     matchingService = new MatchingService();
     startCronJobs() {
-        cron.schedule('*/20 * * * * *', async () => {
+        cron.schedule('*/5 * * * * *', async () => {
+            console.log('Running cron job to update open auctions');
             try {
                 await this.matchingService.updateOpenAuctions();
-            } catch (error) {
-                console.error(error);
-            }
-        });
-        cron.schedule('*/22 * * * * *', async () => {
-            try {
                 await this.matchingService.determineWinner();
             } catch (error) {
                 console.error(error);

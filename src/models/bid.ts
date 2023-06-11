@@ -6,6 +6,9 @@ export interface RideProviderBidType {
     rideProviderId: string;
     amount: number;
     rating: number;
+    model: String,
+    estimatedArrivalTime: Number,
+    passengerCount: Number,
 }  
 
 export const BidType = new Schema({
@@ -23,4 +26,7 @@ export const BidType = new Schema({
     amount: Number,
     rating: Number,
     bidPlacedTimestamp: Number,
+    model: String,
+    estimatedArrivalTime: Number,
+    passengerCount: Number
 });

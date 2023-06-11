@@ -46,6 +46,9 @@ export class MatchingService {
         rideProviderId: bid.rideProviderId,
         amount: bid.amount,
         bidPlacedTimestamp: Math.floor(Date.now() / 1000),
+        model: bid.model,
+        estimatedArrivalTime: bid.estimatedArrivalTime,
+        passengerCount: bid.passengerCount,
       });
     } catch (error) {
       console.error(error);
@@ -55,7 +58,7 @@ export class MatchingService {
 
   isAuctionOpen(timestamp: number): boolean {
     const now = Math.floor(Date.now() / 1000);
-    if ((now - timestamp) > 60) {
+    if ((now - timestamp) > 30) {
       return false;
     }
     return true;
@@ -129,7 +132,9 @@ export class MatchingService {
     try {
         const rideRequestModel = mongoose.model('RideRequest', RideRequestType);
         const rideRequest: any = await rideRequestModel.findOne({ rideRequestId: rideRequestId });
-        return rideRequest;
+        const bidModel = mongoose.model('Bid', BidType);
+        const bids: any = await bidModel.find({ rideRequestId: rideRequestId });
+        return {rideRequest: rideRequest, bid: bids[0]};
     } catch (error) {
         console.error(error);
         throw error;
