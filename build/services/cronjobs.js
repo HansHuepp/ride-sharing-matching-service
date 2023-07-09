@@ -20,16 +20,10 @@ class CronJobs {
         this.matchingService = new matching_service_1.MatchingService();
     }
     startCronJobs() {
-        node_cron_1.default.schedule('*/20 * * * * *', () => __awaiter(this, void 0, void 0, function* () {
+        node_cron_1.default.schedule('*/5 * * * * *', () => __awaiter(this, void 0, void 0, function* () {
+            console.log('Running cron job to update open auctions');
             try {
                 yield this.matchingService.updateOpenAuctions();
-            }
-            catch (error) {
-                console.error(error);
-            }
-        }));
-        node_cron_1.default.schedule('*/22 * * * * *', () => __awaiter(this, void 0, void 0, function* () {
-            try {
                 yield this.matchingService.determineWinner();
             }
             catch (error) {

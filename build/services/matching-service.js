@@ -16,12 +16,17 @@ exports.MatchingService = void 0;
 const bid_1 = require("./../models/bid");
 const crypto_1 = require("crypto");
 const rideRequest_1 = require("../models/rideRequest");
+const key_exchange_service_1 = require("./key-exchange-service");
 const mongoose_1 = __importDefault(require("mongoose"));
 class MatchingService {
+    constructor() {
+        this.keyExchangeService = new key_exchange_service_1.KeyExchangeService();
+    }
     requestRide(rideRequest) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const rideRequestId = (0, crypto_1.randomUUID)();
+                const sharedNumbers = this.keyExchangeService.generateSharedNumbers();
                 const rideRequestModel = mongoose_1.default.model('RideRequest', rideRequest_1.RideRequestType);
                 yield rideRequestModel.create({
                     rideRequestId: rideRequestId,
@@ -30,7 +35,11 @@ class MatchingService {
                     dropoffLocation: rideRequest.dropoffLocation,
                     rating: rideRequest.rating,
                     auctionStartedTimestamp: Math.floor(Date.now() / 1000),
+                    sharedPrime: sharedNumbers.sharedPrime,
+                    sharedGenerator: sharedNumbers.sharedGenerator,
+                    userPublicKey: rideRequest.userPublicKey,
                 });
+                return rideRequestId;
             }
             catch (error) {
                 console.error(error);
@@ -62,6 +71,10 @@ class MatchingService {
                     rideProviderId: bid.rideProviderId,
                     amount: bid.amount,
                     bidPlacedTimestamp: Math.floor(Date.now() / 1000),
+                    model: bid.model,
+                    estimatedArrivalTime: bid.estimatedArrivalTime,
+                    passengerCount: bid.passengerCount,
+                    vehiclePublicKey: bid.vehiclePublicKey
                 });
             }
             catch (error) {
@@ -73,7 +86,7 @@ class MatchingService {
     ;
     isAuctionOpen(timestamp) {
         const now = Math.floor(Date.now() / 1000);
-        if ((now - timestamp) > 60) {
+        if ((now - timestamp) > 30) {
             return false;
         }
         return true;
@@ -111,14 +124,17 @@ class MatchingService {
                         // Sort the array of bids[].amount in ascending order
                         bids.sort((a, b) => a.amount - b.amount);
                         let winnerBid;
+                        let secondHighestBid;
                         // if winnerBid[1] does not exist, then there is only one bid
                         if (bids[1]) {
-                            winnerBid = bids[1];
+                            winnerBid = bids[0];
+                            secondHighestBid = bids[1];
                         }
                         else {
                             winnerBid = bids[0];
+                            secondHighestBid = bids[0];
                         }
-                        yield rideRequestModel.updateOne({ rideRequestId: rideRequest.rideRequestId }, { auctionStatus: 'waiting-for-signature', auctionWinner: winnerBid.rideProviderId, winningBid: winnerBid.amount });
+                        yield rideRequestModel.updateOne({ rideRequestId: rideRequest.rideRequestId }, { auctionStatus: 'waiting-for-signature', auctionWinner: winnerBid.rideProviderId, winningBid: secondHighestBid.amount });
                     }
                     else {
                         yield rideRequestModel.updateOne({ rideRequestId: rideRequest.rideRequestId }, { auctionStatus: 'waiting-for-signature' });
@@ -149,7 +165,9 @@ class MatchingService {
             try {
                 const rideRequestModel = mongoose_1.default.model('RideRequest', rideRequest_1.RideRequestType);
                 const rideRequest = yield rideRequestModel.findOne({ rideRequestId: rideRequestId });
-                return rideRequest;
+                const bidModel = mongoose_1.default.model('Bid', bid_1.BidType);
+                const bids = yield bidModel.find({ rideRequestId: rideRequestId });
+                return { rideRequest: rideRequest, bid: bids[0] };
             }
             catch (error) {
                 console.error(error);

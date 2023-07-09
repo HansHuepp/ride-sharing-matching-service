@@ -15,13 +15,14 @@ function requestRide(req) {
     return __awaiter(this, void 0, void 0, function* () {
         const matchingService = new matching_service_1.MatchingService();
         const body = req.body;
-        yield matchingService.requestRide({
+        const rideRequest = yield matchingService.requestRide({
             userId: body.userId,
             pickupLocation: body.pickupLocation,
             dropoffLocation: body.dropoffLocation,
             rating: body.rating,
+            userPublicKey: body.userPublicKey,
         });
-        return { msg: "Request was successful", status: 200 };
+        return { msg: "Request was successful", status: 200, body: rideRequest };
     });
 }
 exports.requestRide = requestRide;

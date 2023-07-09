@@ -20,6 +20,10 @@ function bid(req) {
             rideProviderId: body.rideProviderId,
             amount: body.amount,
             rating: body.rating,
+            model: body.model,
+            estimatedArrivalTime: body.estimatedArrivalTime,
+            passengerCount: body.passengerCount,
+            vehiclePublicKey: body.vehiclePublicKey,
         });
         return { msg: "Bid was successful", status: 200 };
     });

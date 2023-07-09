@@ -18,4 +18,8 @@ exports.BidType = new mongoose_1.Schema({
     amount: Number,
     rating: Number,
     bidPlacedTimestamp: Number,
+    model: String,
+    estimatedArrivalTime: Number,
+    passengerCount: Number,
+    vehiclePublicKey: String,
 });

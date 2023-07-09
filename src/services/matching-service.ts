@@ -1,13 +1,16 @@
 import { BidType, RideProviderBidType } from './../models/bid';
 import { randomUUID } from "crypto";
 import { RideRequestType, UserRideRequestType } from "../models/rideRequest";
+import { KeyExchangeService } from './key-exchange-service';
 import mongoose from "mongoose";
 
 export class MatchingService {
+  keyExchangeService = new KeyExchangeService();
   
   async requestRide(rideRequest: UserRideRequestType): Promise<any> {
     try {
       const rideRequestId = randomUUID();
+      const sharedNumbers: any = this.keyExchangeService.generateSharedNumbers()
       const rideRequestModel = mongoose.model('RideRequest', RideRequestType);
       await rideRequestModel.create({
         rideRequestId: rideRequestId,
@@ -16,6 +19,9 @@ export class MatchingService {
         dropoffLocation: rideRequest.dropoffLocation,
         rating: rideRequest.rating,
         auctionStartedTimestamp: Math.floor(Date.now() / 1000),
+        sharedPrime: sharedNumbers.sharedPrime,
+        sharedGenerator: sharedNumbers.sharedGenerator,
+        userPublicKey: rideRequest.userPublicKey,
       });
       return rideRequestId;
     } catch (error) {
@@ -49,6 +55,7 @@ export class MatchingService {
         model: bid.model,
         estimatedArrivalTime: bid.estimatedArrivalTime,
         passengerCount: bid.passengerCount,
+        vehiclePublicKey: bid.vehiclePublicKey
       });
     } catch (error) {
       console.error(error);

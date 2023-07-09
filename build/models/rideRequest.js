@@ -10,8 +10,28 @@ exports.RideRequestType = new mongoose_1.Schema({
         unique: true
     },
     userId: String,
-    pickupLocation: String,
-    dropoffLocation: String,
+    pickupLocation: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
+    dropoffLocation: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     rating: Number,
     auctionStartedTimestamp: Number,
     auctionStatus: {
@@ -30,5 +50,10 @@ exports.RideRequestType = new mongoose_1.Schema({
     contractAddress: {
         type: String,
         default: ''
-    }
+    },
+    sharedPrime: String,
+    sharedGenerator: String,
+    userPublicKey: String,
 });
+exports.RideRequestType.index({ pickupLocation: '2dsphere' });
+exports.RideRequestType.index({ dropoffLocation: '2dsphere' });

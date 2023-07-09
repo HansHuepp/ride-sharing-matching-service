@@ -10,6 +10,7 @@ export async function requestRide(req: any):Promise<ServiceResponse<any>>{
         pickupLocation: body.pickupLocation,
         dropoffLocation: body.dropoffLocation,
         rating: body.rating,
+        userPublicKey: body.userPublicKey,
     });
     return { msg:"Request was successful", status: 200, body: rideRequest };
 }

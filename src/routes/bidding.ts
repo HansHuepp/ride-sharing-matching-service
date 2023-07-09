@@ -13,6 +13,7 @@ export async function bid(req: any):Promise<ServiceResponse<any>>{
         model: body.model,
         estimatedArrivalTime: body.estimatedArrivalTime,
         passengerCount: body.passengerCount,
+        vehiclePublicKey: body.vehiclePublicKey,
     });
     return { msg: "Bid was successful", status: 200 };
 }

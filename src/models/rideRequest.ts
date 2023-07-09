@@ -12,6 +12,7 @@ export interface UserRideRequestType {
         coordinates: number[];
     };
     rating: number;
+    userPublicKey: string;
 }
 
 
@@ -62,7 +63,10 @@ export const RideRequestType = new Schema({
     contractAddress: {  
         type: String,
         default: ''
-    }
+    },
+    sharedPrime: String, 
+    sharedGenerator: String,
+    userPublicKey: String,
 });
 RideRequestType.index({ pickupLocation: '2dsphere' });
 RideRequestType.index({ dropoffLocation: '2dsphere' });
