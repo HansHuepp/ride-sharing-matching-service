@@ -11,8 +11,14 @@ export interface UserRideRequestType {
         type: string;
         coordinates: number[];
     };
+    gridLocation: string;
     rating: number;
     userPublicKey: string;
+    maxUserRating: number;
+    minRating: number;
+    maxPassengers: number;
+    maxWaitingTime: number;
+    minPassengerRating: number;
 }
 
 
@@ -45,6 +51,7 @@ export const RideRequestType = new Schema({
             required: true
         }
     },
+    gridLocation: String,
     rating: Number,
     auctionStartedTimestamp: Number,
     auctionStatus: {
@@ -67,6 +74,11 @@ export const RideRequestType = new Schema({
     sharedPrime: String, 
     sharedGenerator: String,
     userPublicKey: String,
+    maxUserRating: Number,
+    minRating: Number,
+    maxPassengers: Number,
+    maxWaitingTime: Number,
+    minPassengerRating: Number,
 });
 RideRequestType.index({ pickupLocation: '2dsphere' });
 RideRequestType.index({ dropoffLocation: '2dsphere' });

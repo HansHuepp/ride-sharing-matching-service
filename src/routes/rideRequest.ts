@@ -9,9 +9,17 @@ export async function requestRide(req: any):Promise<ServiceResponse<any>>{
         userId: body.userId,
         pickupLocation: body.pickupLocation,
         dropoffLocation: body.dropoffLocation,
+        gridLocation: body.gridLocation,
         rating: body.rating,
         userPublicKey: body.userPublicKey,
+        maxUserRating: body.maxUserRating,
+        minRating: body.minRating,
+        maxPassengers: body.maxPassengers,
+        maxWaitingTime: body.maxWaitingTime,
+        minPassengerRating: body.minPassengerRating
+
     });
+    console.log(body);
     return { msg:"Request was successful", status: 200, body: rideRequest };
 }
 

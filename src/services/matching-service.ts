@@ -17,11 +17,18 @@ export class MatchingService {
         userId: rideRequest.userId,
         pickupLocation: rideRequest.pickupLocation,
         dropoffLocation: rideRequest.dropoffLocation,
+        gridLocation: rideRequest.gridLocation,
         rating: rideRequest.rating,
         auctionStartedTimestamp: Math.floor(Date.now() / 1000),
         sharedPrime: sharedNumbers.sharedPrime,
         sharedGenerator: sharedNumbers.sharedGenerator,
         userPublicKey: rideRequest.userPublicKey,
+        maxUserRating: rideRequest.maxUserRating,
+        minRating: rideRequest.minRating,
+        maxPassengers: rideRequest.maxPassengers,
+        maxWaitingTime: rideRequest.maxWaitingTime,
+        minPassengerRating: rideRequest.minPassengerRating
+
       });
       return rideRequestId;
     } catch (error) {
